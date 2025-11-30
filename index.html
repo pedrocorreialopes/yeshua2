@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comunidade Católica Yeshuá - Espiritualidade, Comunidade e Evangelização</title>
+    <!-- Carregamento do Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Fonte Inter (padrão Tailwind) -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+    <style>
+        /* Estilo para a animação de carregamento */
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        .loading-pulse {
+            animation: pulse 1.5s infinite;
+        }
+    </style>
+    <script>
+        // Configuração do Tailwind CSS com a paleta de cores oficial
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        // Paleta de Cores Oficial
+                        'c-base': '#122c34',        // Tom principal (base, cabeçalho, rodapé)
+                        'c-secondary': '#224870',   // Destaque secundário
+                        'c-nav': '#2a4494',         // Elementos de navegação, títulos e ícones
+                        'c-detail': '#4ea5d9',      // Detalhes, links, botões
+                        'c-contrast': '#44cfcb',    // Contraste suave, áreas de destaque e cartões
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50 font-sans text-c-base antialiased">
+
+    <!-- Função auxiliar para gerar ícones SVG (Lucide) -->
+    <script>
+        /**
+         * Gera um SVG com base no nome do ícone (simula Lucide icons).
+         * @param {string} iconName - Nome do ícone (ex: 'cross', 'users', 'mail').
+         * @param {string} className - Classes Tailwind para estilo.
+         */
+        const iconSVG = (iconName, className = 'w-5 h-5') => {
+            const icons = {
+                // Símbolos Cristãos/Comunidade
+                cross: `<path d="M12 2v20"/><path d="M17 17H7"/>`, // Símbolo da cruz
+                users: `<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>`, // Comunidade
+                bookOpen: `<path d="M2 12s4-3 8-3 8 3 8 3V4L10 2 2 4Z"/><path d="M2 12c0-3 4-9 8-9s8 6 8 9"/><path d="M10 12V2"/>`, // Formação/Bíblia
+
+                // Ações/Contato
+                mail: `<rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>`,
+                phone: `<path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6.32-6.32 19.79 19.79 0 0 1-3.07-8.63A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92Z"/>`,
+                heart: `<path d="M19 14c1.49-1.46 3-3.2 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.04 3 5.5l7 7Z"/>`, // Doações/Oração
+                calendar: `<rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/>`, // Eventos
+                camera: `<path d="M14.5 4h-4a4 4 0 0 0 0 8h4a4 4 0 0 0 0-8"/><path d="M12 21a2 2 0 1 0 0-4 2 2 0 0 0 0 4"/><path d="M18 6h-1.5"/><path d="M7.5 6H6"/><path d="M14.5 4h-4a4 4 0 0 0 0 8h4a4 4 0 0 0 0-8"/>`, // Galeria
+
+                // Redes Sociais (Usando ícones genéricos)
+                facebook: `<path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>`,
+                instagram: `<rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.5" y1="6.5" y2="6.5"/>`,
+                youtube: `<path d="M2.5 17.5V6.5a2 2 0 0 1 2-2h15a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2h-15a2 2 0 0 1-2-2z"/><path d="m10 8 5 4-5 4z"/>`,
+                whatsapp: `<path d="M17.7 22.7a2 2 0 0 1-2.42-.4l-2.4-1.9a1.73 1.73 0 0 0-1.74-.09 10.9 10.9 0 0 1-4.83-4.83 1.74 1.74 0 0 0-.09-1.74l-1.9-2.42a2 2 0 0 1-.4-2.42l.55-.55A2 2 0 0 1 5.3 7.3l.8-.8a2 2 0 0 1 2.83 0l.4.4a2 2 0 0 0 2.83 0l.4-.4a2 2 0 0 1 2.83 0l.8.8a2 2 0 0 1 0 2.83l-.4.4a2 2 0 0 0 0 2.83l.4.4a2 2 0 0 1 0 2.83l-.8.8a2 2 0 0 1-2.83 0l-.4-.4a2 2 0 0 0-2.83 0l-.4.4a2 2 0 0 1-2.83 0l-.8-.8A2 2 0 0 1 2.7 7.3l.55-.55a2 2 0 0 1 2.42.4l2.4 1.9a1.73 1.73 0 0 0 1.74.09 10.9 10.9 0 0 1 4.83 4.83 1.74 1.74 0 0 0 .09 1.74l1.9 2.42a2 2 0 0 1 .4 2.42l-.55.55z"/>`,
+                spotify: `<circle cx="12" cy="12" r="10"/><path d="M12 6.5a4.5 4.5 0 0 1 4.5 4.5"/><path d="M9 13a3 3 0 0 1 3 3"/>`,
+            };
+            const svgContent = icons[iconName] || icons.cross; // Default para 'cross' se não encontrado
+
+            return `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="${className}">${svgContent}</svg>`;
+        };
+    </script>
+
+    <!-- Cabeçalho Fixo e Navegação -->
+    <header id="main-header" class="sticky top-0 z-50 shadow-lg bg-c-base/95 backdrop-blur-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex justify-between items-center">
+            <!-- Logo/Nome da Comunidade -->
+            <a href="#home" onclick="renderPage('home')" class="flex items-center space-x-2 transition duration-300 transform hover:scale-[1.02]">
+                <span class="text-c-contrast font-bold text-3xl leading-none">Y</span>
+                <span class="text-white text-xl font-semibold tracking-wide">Yeshuá</span>
+            </a>
+
+            <!-- Menu de Navegação (Desktop) -->
+            <nav class="hidden md:flex space-x-6 text-white text-lg">
+                <a href="#home" onclick="renderPage('home')" class="nav-item hover:text-c-detail transition duration-200 p-2 rounded-lg">Início</a>
+                <a href="#quem-somos" onclick="renderPage('quem-somos')" class="nav-item hover:text-c-detail transition duration-200 p-2 rounded-lg">Quem Somos</a>
+                <a href="#formacoes" onclick="renderPage('formacoes')" class="nav-item hover:text-c-detail transition duration-200 p-2 rounded-lg">Formações</a>
+                <a href="#eventos" onclick="renderPage('eventos')" class="nav-item hover:text-c-detail transition duration-200 p-2 rounded-lg">Eventos</a>
+                <a href="#fale-conosco" onclick="renderPage('fale-conosco')" class="nav-item hover:text-c-detail transition duration-200 p-2 rounded-lg">Contato</a>
+            </nav>
+
+            <!-- Botões de Ação Rápida (Desktop) -->
+            <div class="hidden md:flex space-x-4">
+                <a href="#pedidos-de-oracao" onclick="renderPage('pedidos-de-oracao')" class="btn-action bg-c-contrast hover:bg-c-contrast/80 text-c-base font-bold py-2 px-4 rounded-full shadow-md transition duration-300 flex items-center">
+                    Pedido de Oração
+                </a>
+                <a href="#doacoes" onclick="renderPage('doacoes')" class="btn-action bg-c-detail hover:bg-c-detail/80 text-white font-bold py-2 px-4 rounded-full shadow-md transition duration-300 flex items-center">
+                    Doações
+                </a>
+            </div>
+
+            <!-- Botão do Menu Mobile -->
+            <button id="mobile-menu-button" class="md:hidden text-white focus:outline-none p-2 rounded-lg hover:bg-c-nav transition duration-200" aria-label="Abrir Menu">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+            </button>
+        </div>
+
+        <!-- Menu Mobile (oculto por padrão) -->
+        <nav id="mobile-menu" class="hidden md:hidden bg-c-base/90 border-t border-c-secondary/50">
+            <div class="px-2 pt-2 pb-3 space-y-1 text-center">
+                <a href="#home" onclick="renderPage('home'); toggleMobileMenu()" class="block text-white hover:bg-c-nav/50 hover:text-c-detail rounded-md px-3 py-2 text-base font-medium transition duration-200">Início</a>
+                <a href="#quem-somos" onclick="renderPage('quem-somos'); toggleMobileMenu()" class="block text-white hover:bg-c-nav/50 hover:text-c-detail rounded-md px-3 py-2 text-base font-medium transition duration-200">Quem Somos</a>
+                <a href="#formacoes" onclick="renderPage('formacoes'); toggleMobileMenu()" class="block text-white hover:bg-c-nav/50 hover:text-c-detail rounded-md px-3 py-2 text-base font-medium transition duration-200">Formações</a>
+                <a href="#eventos" onclick="renderPage('eventos'); toggleMobileMenu()" class="block text-white hover:bg-c-nav/50 hover:text-c-detail rounded-md px-3 py-2 text-base font-medium transition duration-200">Eventos</a>
+                <a href="#fale-conosco" onclick="renderPage('fale-conosco'); toggleMobileMenu()" class="block text-white hover:bg-c-nav/50 hover:text-c-detail rounded-md px-3 py-2 text-base font-medium transition duration-200">Contato</a>
+                <a href="#pedidos-de-oracao" onclick="renderPage('pedidos-de-oracao'); toggleMobileMenu()" class="block bg-c-contrast hover:bg-c-contrast/80 text-c-base font-bold rounded-md px-3 py-2 mt-2 text-base transition duration-200">Pedidos de Oração</a>
+                <a href="#doacoes" onclick="renderPage('doacoes'); toggleMobileMenu()" class="block bg-c-detail hover:bg-c-detail/80 text-white font-bold rounded-md px-3 py-2 mt-1 text-base transition duration-200">Doações</a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Conteúdo Principal (SPA) -->
+    <main id="app-content" class="min-h-screen">
+        <!-- O conteúdo da página será injetado aqui pelo JavaScript -->
+        <div class="h-[60vh] flex items-center justify-center">
+            <p class="text-xl text-c-nav loading-pulse">Carregando conteúdo...</p>
+        </div>
+    </main>
+
+    <!-- Rodapé Completo -->
+    <footer class="bg-c-base text-white py-12 border-t border-c-secondary">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-2 md:grid-cols-4 gap-8">
+
+            <!-- Coluna 1: Logo e Missão -->
+            <div>
+                <h3 class="text-2xl font-bold text-c-contrast mb-4">Yeshuá</h3>
+                <p class="text-sm text-gray-300 mb-4">"Para que todos tenham vida e a tenham em abundância."</p>
+                <p class="text-sm">Rua da Comunidade, 123 - Centro, Cidade - UF</p>
+                <p class="text-sm">CEP: 12345-678</p>
+            </div>
+
+            <!-- Coluna 2: Navegação Rápida -->
+            <div>
+                <h4 class="text-xl font-semibold mb-4 text-c-detail">Navegação</h4>
+                <ul class="space-y-2">
+                    <li><a href="#home" onclick="renderPage('home')" class="hover:text-c-detail transition duration-200">Início</a></li>
+                    <li><a href="#quem-somos" onclick="renderPage('quem-somos')" class="hover:text-c-detail transition duration-200">Quem Somos</a></li>
+                    <li><a href="#eventos" onclick="renderPage('eventos')" class="hover:text-c-detail transition duration-200">Agenda de Eventos</a></li>
+                    <li><a href="#ministérios" onclick="renderPage('ministerios')" class="hover:text-c-detail transition duration-200">Ministérios</a></li>
+                </ul>
+            </div>
+
+            <!-- Coluna 3: Formação e Suporte -->
+            <div>
+                <h4 class="text-xl font-semibold mb-4 text-c-detail">Espiritualidade</h4>
+                <ul class="space-y-2">
+                    <li><a href="#formacoes" onclick="renderPage('formacoes')" class="hover:text-c-detail transition duration-200">Formações</a></li>
+                    <li><a href="#testemunhos" onclick="renderPage('testemunhos')" class="hover:text-c-detail transition duration-200">Testemunhos</a></li>
+                    <li><a href="#blog-espiritual" onclick="renderPage('blog-espiritual')" class="hover:text-c-detail transition duration-200">Blog Espiritual</a></li>
+                    <li><a href="#pedidos-de-oracao" onclick="renderPage('pedidos-de-oracao')" class="hover:text-c-detail transition duration-200">Pedidos de Oração</a></li>
+                </ul>
+            </div>
+
+            <!-- Coluna 4: Contato e Redes -->
+            <div>
+                <h4 class="text-xl font-semibold mb-4 text-c-detail">Contato</h4>
+                <p class="mb-4">E-mail: <a href="mailto:contato@yeshua.org" class="hover:text-c-detail transition duration-200">contato@yeshua.org</a></p>
+                <p class="mb-4">Missas: Domingos, 18h00</p>
+                <div class="flex space-x-4">
+                    <a href="https://facebook.com/comunidadeyeshua" target="_blank" class="text-white hover:text-c-detail transition duration-200" aria-label="Facebook">${iconSVG('facebook', 'w-6 h-6')}</a>
+                    <a href="https://instagram.com/comunidadeyeshua" target="_blank" class="text-white hover:text-c-detail transition duration-200" aria-label="Instagram">${iconSVG('instagram', 'w-6 h-6')}</a>
+                    <a href="https://youtube.com/comunidadeyeshua" target="_blank" class="text-white hover:text-c-detail transition duration-200" aria-label="YouTube">${iconSVG('youtube', 'w-6 h-6')}</a>
+                    <a href="https://wa.me/5511999999999" target="_blank" class="text-white hover:text-c-detail transition duration-200" aria-label="WhatsApp">${iconSVG('whatsapp', 'w-6 h-6')}</a>
+                    <a href="https://spotify.com/comunidadeyeshua" target="_blank" class="text-white hover:text-c-detail transition duration-200" aria-label="Spotify">${iconSVG('spotify', 'w-6 h-6')}</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Direitos Autorais -->
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8 border-t border-c-secondary pt-6 text-center text-sm text-gray-400">
+            <p>&copy; ${new Date().getFullYear()} Comunidade Católica Yeshuá. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+
+    <!-- Lógica JavaScript para SPA e Interatividade -->
+    <script>
+        const appContent = document.getElementById('app-content');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+
+        // URL para imagem placeholder cristã (ex: Luz e Paz)
+        const placeholderImage = (text) => `https://placehold.co/1200x600/2a4494/ffffff?text=${encodeURIComponent(text)}`;
+
+        // =========================================================
+        // 1. Definições de Conteúdo para Simulação SPA
+        // =========================================================
+
+        const pageContent = {
+            'home': `
+                <!-- Banner Principal -->
+                <div class="relative h-96 md:h-[60vh] bg-cover bg-center rounded-b-xl shadow-2xl overflow-hidden" style="background-image: url('${placeholderImage('Acolhimento e Luz Divina')}');">
+                    <div class="absolute inset-0 bg-c-base/60 backdrop-brightness-75 flex items-center justify-center p-4">
+                        <div class="text-center text-white max-w-4xl">
+                            <h1 class="text-4xl md:text-6xl font-extrabold mb-4 animate-fadeIn">
+                                Somos a Comunidade Católica Yeshuá
+                            </h1>
+                            <p class="text-xl md:text-2xl font-light mb-8 text-c-contrast">
+                                Encontre a sua família de fé. Espiritualidade, Comunidade e Evangelização.
+                            </p>
+                            <div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4">
+                                <button onclick="renderPage('eventos')" class="btn-primary bg-c-contrast hover:bg-c-contrast/80 text-c-base py-3 px-8 text-lg font-bold rounded-full shadow-lg transition duration-300 transform hover:scale-105">
+                                    Participar da Missa
+                                </button>
+                                <button onclick="renderPage('pedidos-de-oracao')" class="btn-secondary bg-c-detail hover:bg-c-detail/80 text-white py-3 px-8 text-lg font-bold rounded-full shadow-lg transition duration-300 transform hover:scale-105">
+                                    Pedidos de Oração
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Destaques da Comunidade -->
+                <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+                    <h2 class="text-4xl font-bold text-c-nav mb-12 text-center border-b-2 border-c-contrast/50 pb-2">Nossos Pilares</h2>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        <!-- Destaque 1: Formação -->
+                        <div class="bg-white p-6 rounded-2xl shadow-xl border-t-4 border-c-secondary hover:shadow-2xl transition duration-300 transform hover:-translate-y-1">
+                            <div class="text-c-detail mb-4">${iconSVG('bookOpen', 'w-10 h-10')}</div>
+                            <h3 class="text-2xl font-semibold text-c-nav mb-3">Formação Contínua</h3>
+                            <p class="text-gray-600">Cresça na fé através de estudos bíblicos, catequeses e retiros espirituais. Conteúdo para toda a família.</p>
+                            <button onclick="renderPage('formacoes')" class="text-c-detail mt-4 font-medium hover:text-c-nav transition duration-200 flex items-center">Saiba Mais</button>
+                        </div>
+
+                        <!-- Destaque 2: Comunidade -->
+                        <div class="bg-white p-6 rounded-2xl shadow-xl border-t-4 border-c-secondary hover:shadow-2xl transition duration-300 transform hover:-translate-y-1">
+                            <div class="text-c-detail mb-4">${iconSVG('users', 'w-10 h-10')}</div>
+                            <h3 class="text-2xl font-semibold text-c-nav mb-3">Vida Comunitária</h3>
+                            <p class="text-gray-600">Participe dos nossos encontros, celebrações e pastorais. Somos uma família que caminha junta na fé.</p>
+                            <button onclick="renderPage('ministerios')" class="text-c-detail mt-4 font-medium hover:text-c-nav transition duration-200 flex items-center">Ver Ministérios</button>
+                        </div>
+
+                        <!-- Destaque 3: Testemunhos -->
+                        <div class="bg-white p-6 rounded-2xl shadow-xl border-t-4 border-c-secondary hover:shadow-2xl transition duration-300 transform hover:-translate-y-1">
+                            <div class="text-c-detail mb-4">${iconSVG('heart', 'w-10 h-10')}</div>
+                            <h3 class="text-2xl font-semibold text-c-nav mb-3">O Poder da Fé</h3>
+                            <p class="text-gray-600">Veja como Deus tem agido na vida dos nossos irmãos. Sua história também pode inspirar!</p>
+                            <button onclick="renderPage('testemunhos')" class="text-c-detail mt-4 font-medium hover:text-c-nav transition duration-200 flex items-center">Ler Testemunhos</button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Área de Notícias e Eventos Futuros (Cartões) -->
+                <section class="bg-c-contrast/10 py-16">
+                    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                        <h2 class="text-4xl font-bold text-c-nav mb-12 text-center">Próximos Eventos e Notícias</h2>
+
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                            <!-- Cartão de Evento -->
+                            <div class="bg-white rounded-2xl shadow-xl overflow-hidden flex flex-col md:flex-row border border-c-contrast/50">
+                                <div class="md:w-1/3 bg-c-secondary text-white flex flex-col items-center justify-center p-4">
+                                    <span class="text-5xl font-extrabold">24</span>
+                                    <span class="text-xl font-medium">SET</span>
+                                    <span class="text-sm">Sábado</span>
+                                </div>
+                                <div class="md:w-2/3 p-6">
+                                    <h3 class="text-2xl font-bold text-c-nav mb-2">Retiro de Cura Interior</h3>
+                                    <p class="text-c-detail font-medium mb-3 flex items-center">${iconSVG('calendar', 'w-5 h-5 mr-2')} 08:00 às 18:00</p>
+                                    <p class="text-gray-600">Um dia de profunda oração e escuta da Palavra, com o tema "O Vaso Novo". Inscrições abertas!</p>
+                                    <button onclick="renderPage('eventos')" class="mt-4 btn-primary bg-c-detail hover:bg-c-nav text-white py-2 px-6 rounded-full transition duration-300">Detalhes</button>
+                                </div>
+                            </div>
+
+                            <!-- Cartão de Notícia/Testemunho -->
+                            <div class="bg-white rounded-2xl shadow-xl overflow-hidden p-6 border border-c-contrast/50">
+                                <span class="bg-c-contrast text-c-base text-xs font-bold px-3 py-1 rounded-full uppercase">Testemunho</span>
+                                <h3 class="text-2xl font-bold text-c-nav my-3">"Fui curado da depressão após a oração"</h3>
+                                <p class="text-gray-600 mb-4">O relato de Maria, membro da comunidade, sobre a intercessão e o poder de Deus que transformou sua vida e família.</p>
+                                <button onclick="renderPage('testemunhos')" class="text-c-detail font-medium hover:text-c-nav transition duration-200">Leia o Testemunho Completo</button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            `,
+
+            'quem-somos': `
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+                    <h1 class="text-5xl font-extrabold text-c-nav mb-8 text-center border-b-4 border-c-contrast pb-3">Nossa História de Fé</h1>
+                    
+                    <!-- História e Carisma -->
+                    <div class="bg-white p-8 md:p-12 rounded-2xl shadow-2xl mb-12">
+                        <h2 class="text-3xl font-bold text-c-secondary mb-4">Comunidade Católica Yeshuá: Um Chamado à Vida Plena</h2>
+                        <p class="text-lg text-gray-700 leading-relaxed mb-6">
+                            Fundada em 2005 por Padre João Paulo, a Comunidade Católica Yeshuá nasceu de um forte desejo de viver o Evangelho de forma radical, unindo vida em comunidade, profunda espiritualidade e uma paixão ardente pela evangelização. Nosso carisma é a <strong>"Misericórdia e a Esperança"</strong>, buscando ser um sinal vivo da presença de Cristo que salva e restaura.
+                        </p>
+                        <p class="text-lg text-gray-700 leading-relaxed">
+                            Acreditamos que o encontro pessoal com Jesus, o Yeshuá (Salvador), transforma e impulsiona a missão. Nossa casa é um lar de acolhimento para todos que buscam um sentido maior para a vida.
+                        </p>
+                    </div>
+
+                    <!-- Missão, Visão e Valores (Grid) -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+                        <div class="p-6 rounded-xl bg-c-detail/10 border-l-4 border-c-detail">
+                            <h3 class="text-2xl font-bold text-c-nav mb-3">Missão</h3>
+                            <p class="text-gray-600">Levar o anúncio do Reino de Deus a todos os povos, restaurando vidas pela Misericórdia e pela Palavra.</p>
+                        </div>
+                        <div class="p-6 rounded-xl bg-c-detail/10 border-l-4 border-c-detail">
+                            <h3 class="text-2xl font-bold text-c-nav mb-3">Visão</h3>
+                            <p class="text-gray-600">Ser referência de comunidade de vida e aliança, gerando frutos de santidade e missão para a Igreja.</p>
+                        </div>
+                        <div class="p-6 rounded-xl bg-c-detail/10 border-l-4 border-c-detail">
+                            <h3 class="text-2xl font-bold text-c-nav mb-3">Valores</h3>
+                            <p class="text-gray-600">Eucaristia, Oração, Acolhimento Fraterno, Fidelidade ao Magistério e Serviço aos Pobres.</p>
+                        </div>
+                    </div>
+
+                    <!-- Equipe Pastoral (Exemplo) -->
+                    <div class="mt-16 text-center">
+                        <h2 class="text-4xl font-bold text-c-nav mb-8">Nossa Equipe Pastoral</h2>
+                        <div class="flex flex-wrap justify-center gap-8">
+                            <div class="w-full sm:w-1/3 lg:w-1/5 bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition duration-300">
+                                <img src="${placeholderImage('Padre João Paulo')}" alt="Foto do Padre João Paulo" class="w-32 h-32 rounded-full mx-auto object-cover mb-4 border-4 border-c-contrast">
+                                <p class="text-xl font-semibold text-c-secondary">Pe. João Paulo</p>
+                                <p class="text-c-detail text-sm">Fundador e Guia Espiritual</p>
+                            </div>
+                            <div class="w-full sm:w-1/3 lg:w-1/5 bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition duration-300">
+                                <img src="${placeholderImage('Maria da Graça')}" alt="Foto da Maria da Graça" class="w-32 h-32 rounded-full mx-auto object-cover mb-4 border-4 border-c-contrast">
+                                <p class="text-xl font-semibold text-c-secondary">Maria da Graça</p>
+                                <p class="text-c-detail text-sm">Coordenadora da Comunidade</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `,
+
+            'formacoes': `
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+                    <h1 class="text-5xl font-extrabold text-c-nav mb-8 text-center border-b-4 border-c-contrast pb-3">Cresça na Fé</h1>
+                    <p class="text-xl text-gray-600 text-center mb-12">Conteúdos catequéticos e materiais espirituais para aprofundar seu relacionamento com Deus.</p>
+
+                    <!-- Navegação de Categorias -->
+                    <div class="flex flex-wrap justify-center gap-4 mb-12">
+                        <button class="bg-c-nav text-white px-5 py-2 rounded-full font-semibold hover:bg-c-detail transition duration-200">Espiritualidade</button>
+                        <button class="bg-c-secondary/20 text-c-nav px-5 py-2 rounded-full font-semibold hover:bg-c-detail hover:text-white transition duration-200">Família</button>
+                        <button class="bg-c-secondary/20 text-c-nav px-5 py-2 rounded-full font-semibold hover:bg-c-detail hover:text-white transition duration-200">Jovens</button>
+                        <button class="bg-c-secondary/20 text-c-nav px-5 py-2 rounded-full font-semibold hover:bg-c-detail hover:text-white transition duration-200">Bíblia</button>
+                        <button class="bg-c-secondary/20 text-c-nav px-5 py-2 rounded-full font-semibold hover:bg-c-detail hover:text-white transition duration-200">Liturgia</button>
+                    </div>
+
+                    <!-- Grid de Conteúdos -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        <!-- Card de Vídeo -->
+                        <div class="bg-white rounded-xl shadow-lg overflow-hidden border border-c-contrast/50">
+                            <img src="${placeholderImage('Oração e Discernimento')}" alt="Capa do Vídeo" class="w-full h-48 object-cover">
+                            <div class="p-5">
+                                <span class="text-c-detail text-sm font-semibold uppercase">Vídeo | Espiritualidade</span>
+                                <h3 class="text-xl font-bold text-c-nav my-2">Como Discernir a Voz de Deus?</h3>
+                                <p class="text-gray-600">Pe. João Paulo explica os passos práticos para ouvir o chamado de Deus em sua vida diária.</p>
+                                <button class="mt-4 text-c-detail font-semibold hover:text-c-nav transition duration-200">Assistir Agora</button>
+                            </div>
+                        </div>
+                        <!-- Card de Artigo -->
+                        <div class="bg-white rounded-xl shadow-lg overflow-hidden border border-c-contrast/50">
+                            <img src="${placeholderImage('O Amor Familiar')}" alt="Capa do Artigo" class="w-full h-48 object-cover">
+                            <div class="p-5">
+                                <span class="text-c-detail text-sm font-semibold uppercase">Artigo | Família</span>
+                                <h3 class="text-xl font-bold text-c-nav my-2">A Família como Igreja Doméstica</h3>
+                                <p class="text-gray-600">Um guia para construir um lar de oração, diálogo e fé, superando os desafios modernos.</p>
+                                <button class="mt-4 text-c-detail font-semibold hover:text-c-nav transition duration-200">Leia na Íntegra</button>
+                            </div>
+                        </div>
+                        <!-- Card de Material para Download -->
+                        <div class="bg-white rounded-xl shadow-lg overflow-hidden border border-c-contrast/50">
+                            <img src="${placeholderImage('Estudo Bíblico de Lucas')}" alt="Capa do Material" class="w-full h-48 object-cover">
+                            <div class="p-5">
+                                <span class="text-c-detail text-sm font-semibold uppercase">Material | Bíblia</span>
+                                <h3 class="text-xl font-bold text-c-nav my-2">Estudo Bíblico: Evangelho de Lucas</h3>
+                                <p class="text-gray-600">Material completo, em PDF, para grupos de oração e estudo pessoal. Baixe gratuitamente!</p>
+                                <button class="mt-4 text-c-detail font-semibold hover:text-c-nav transition duration-200">Baixar PDF</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `,
+
+            'fale-conosco': `
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+                    <h1 class="text-5xl font-extrabold text-c-nav mb-8 text-center border-b-4 border-c-contrast pb-3">Fale Conosco</h1>
+                    <p class="text-xl text-gray-600 text-center mb-12">Estamos disponíveis para atender você. Entre em contato e sinta-se acolhido(a).</p>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                        <!-- Coluna de Contato Rápido e Horários -->
+                        <div class="lg:col-span-1 space-y-6">
+                            <!-- Informações de Contato -->
+                            <div class="bg-c-base text-white p-6 rounded-xl shadow-lg">
+                                <h3 class="text-2xl font-bold mb-3 text-c-contrast">Contatos</h3>
+                                <p class="flex items-center mb-2">${iconSVG('mail', 'w-5 h-5 mr-3 text-c-detail')} <a href="mailto:contato@yeshua.org" class="hover:text-c-detail transition duration-200">contato@yeshua.org</a></p>
+                                <p class="flex items-center mb-2">${iconSVG('phone', 'w-5 h-5 mr-3 text-c-detail')} (11) 99999-9999</p>
+                                <a href="https://wa.me/5511999999999" target="_blank" class="flex items-center justify-center mt-4 bg-c-contrast hover:bg-c-contrast/80 text-c-base font-bold py-2 rounded-full transition duration-300">
+                                    ${iconSVG('whatsapp', 'w-5 h-5 mr-2')} Chame no WhatsApp
+                                </a>
+                            </div>
+
+                            <!-- Horários e Endereço -->
+                            <div class="bg-white p-6 rounded-xl shadow-lg border-t-4 border-c-detail">
+                                <h3 class="text-2xl font-bold text-c-nav mb-3">Missas e Encontros</h3>
+                                <p class="mb-2"><span class="font-semibold text-c-secondary">Missa Dominical:</span> 18h00</p>
+                                <p class="mb-2"><span class="font-semibold text-c-secondary">Grupo de Oração:</span> Quartas-feiras, 20h00</p>
+                                <p class="mt-4 text-sm text-gray-500">Endereço: Rua da Comunidade, 123 - Centro, Cidade.</p>
+                            </div>
+                        </div>
+
+                        <!-- Coluna 2: Formulário de Contato -->
+                        <div class="lg:col-span-2 bg-white p-8 rounded-2xl shadow-2xl border border-c-contrast/50">
+                            <h2 class="text-3xl font-bold text-c-secondary mb-6">Envie Sua Mensagem</h2>
+                            <form onsubmit="alert('Mensagem enviada com sucesso! Em breve, entraremos em contato.'); return false;" class="space-y-4">
+                                <div>
+                                    <label for="nome" class="block text-sm font-medium text-gray-700">Seu Nome</label>
+                                    <input type="text" id="nome" name="nome" required class="mt-1 block w-full rounded-lg border border-gray-300 p-3 shadow-sm focus:border-c-detail focus:ring-c-detail transition duration-200">
+                                </div>
+                                <div>
+                                    <label for="email" class="block text-sm font-medium text-gray-700">Seu E-mail</label>
+                                    <input type="email" id="email" name="email" required class="mt-1 block w-full rounded-lg border border-gray-300 p-3 shadow-sm focus:border-c-detail focus:ring-c-detail transition duration-200">
+                                </div>
+                                <div>
+                                    <label for="assunto" class="block text-sm font-medium text-gray-700">Assunto</label>
+                                    <input type="text" id="assunto" name="assunto" required class="mt-1 block w-full rounded-lg border border-gray-300 p-3 shadow-sm focus:border-c-detail focus:ring-c-detail transition duration-200">
+                                </div>
+                                <div>
+                                    <label for="mensagem" class="block text-sm font-medium text-gray-700">Mensagem</label>
+                                    <textarea id="mensagem" name="mensagem" rows="4" required class="mt-1 block w-full rounded-lg border border-gray-300 p-3 shadow-sm focus:border-c-detail focus:ring-c-detail transition duration-200"></textarea>
+                                </div>
+                                <button type="submit" class="w-full bg-c-nav hover:bg-c-nav/90 text-white font-bold py-3 rounded-full shadow-lg transition duration-300 transform hover:scale-[1.01]">
+                                    Enviar Mensagem
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                    
+                    <!-- Mapa Embutido -->
+                    <div class="mt-16">
+                        <h2 class="text-3xl font-bold text-c-nav mb-4 text-center">Onde Nos Encontrar</h2>
+                        <div class="h-96 w-full rounded-xl overflow-hidden shadow-2xl border-4 border-c-contrast">
+                            <!-- Mapa Placeholder (iFrame real seria aqui) -->
+                            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3000.0000000000004!2d-46.6333094!3d-23.550520!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94ce59a35d97f39f%3A0xf6b9f291e1d3e69!2sCatedral%20da%20S%C3%A9!5e0!3m2!1spt-BR!2sbr!4v1678890000000!5m2!1spt-BR!2sbr" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                        </div>
+                    </div>
+
+                </div>
+            `,
+
+            'pedidos-de-oracao': `
+                <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+                    <div class="bg-white p-8 rounded-2xl shadow-2xl border-t-8 border-c-secondary">
+                        <div class="text-c-nav mb-4 text-center">${iconSVG('heart', 'w-16 h-16 mx-auto')}</div>
+                        <h1 class="text-4xl font-extrabold text-c-nav mb-4 text-center">Seu Pedido de Oração</h1>
+                        <p class="text-lg text-gray-600 text-center mb-8">A Comunidade Yeshuá se une em oração por você. Deixe seu pedido e confie no poder da intercessão.</p>
+
+                        <form onsubmit="alert('Obrigado! Seu pedido de oração foi recebido e será levado ao altar.'); return false;" class="space-y-6">
+                            <div>
+                                <label for="nome-oracao" class="block text-sm font-medium text-gray-700">Seu Nome (Opcional)</label>
+                                <input type="text" id="nome-oracao" name="nome-oracao" class="mt-1 block w-full rounded-lg border border-gray-300 p-3 shadow-sm focus:border-c-detail focus:ring-c-detail">
+                            </div>
+                            <div>
+                                <label for="pedido" class="block text-sm font-medium text-gray-700">Seu Pedido de Oração (Seja específico)</label>
+                                <textarea id="pedido" name="pedido" rows="6" required class="mt-1 block w-full rounded-lg border border-gray-300 p-3 shadow-sm focus:border-c-detail focus:ring-c-detail"></textarea>
+                            </div>
+                            <div class="flex items-start">
+                                <input id="anonimo" name="anonimo" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-c-detail focus:ring-c-detail">
+                                <label for="anonimo" class="ml-2 block text-sm text-gray-900">
+                                    Desejo que meu nome não seja mencionado publicamente (apenas a intenção).
+                                </label>
+                            </div>
+                            <button type="submit" class="w-full bg-c-detail hover:bg-c-detail/90 text-white font-bold py-3 rounded-full shadow-lg transition duration-300 transform hover:scale-[1.01]">
+                                Enviar Pedido
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            `,
+
+            'doacoes': `
+                <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+                    <div class="bg-white p-8 rounded-2xl shadow-2xl border-t-8 border-c-contrast">
+                        <div class="text-c-nav mb-4 text-center">${iconSVG('cross', 'w-16 h-16 mx-auto')}</div>
+                        <h1 class="text-4xl font-extrabold text-c-nav mb-4 text-center">Seja um Mantenedor da Missão</h1>
+                        <p class="text-lg text-gray-600 text-center mb-10">Sua doação é fundamental para a manutenção das obras de evangelização e caridade da Comunidade Yeshuá.</p>
+
+                        <!-- Opções de Doação -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10">
+                            <!-- Doação por Pix (QR Code) -->
+                            <div class="bg-c-base text-white p-6 rounded-xl shadow-lg text-center">
+                                <h3 class="text-2xl font-bold mb-4 text-c-contrast">Doação Imediata (PIX)</h3>
+                                <p class="mb-4">Use o QR Code abaixo ou a Chave PIX.</p>
+                                <img src="foto7.jpg">
+                                
+                                <p class="text-xl font-bold text-c-detail">Chave PIX (CNPJ): 12.345.678/0001-90</p>
+                            </div>
+
+                            <!-- Doação por Cartão/Boleto (Simulação de Gateway) -->
+                            <div class="bg-c-secondary/10 p-6 rounded-xl shadow-lg text-center border-t-4 border-c-secondary">
+                                <h3 class="text-2xl font-bold mb-4 text-c-nav">Doação com Cartão/Boleto</h3>
+                                <p class="text-gray-600 mb-4">Selecione o valor ou contribua livremente.</p>
+                                <div class="flex flex-wrap justify-center gap-3 mb-6">
+                                    <button class="bg-c-detail/20 text-c-nav font-bold py-2 px-4 rounded-full hover:bg-c-detail hover:text-white transition duration-200">R$ 50</button>
+                                    <button class="bg-c-detail/20 text-c-nav font-bold py-2 px-4 rounded-full hover:bg-c-detail hover:text-white transition duration-200">R$ 100</button>
+                                    <button class="bg-c-detail/20 text-c-nav font-bold py-2 px-4 rounded-full hover:bg-c-detail hover:text-white transition duration-200">R$ 250</button>
+                                </div>
+                                <input type="number" placeholder="Outro valor (R$)" class="w-full rounded-lg border border-gray-300 p-3 mb-4 text-c-base">
+                                <button onclick="alert('Simulação de integração de pagamento seguro.');" class="w-full bg-c-detail hover:bg-c-detail/90 text-white font-bold py-3 rounded-full transition duration-300">
+                                    Doar Agora
+                                </button>
+                            </div>
+                        </div>
+
+                        <p class="text-center text-sm text-gray-500 mt-6">"Deus ama a quem dá com alegria." (2 Cor 9,7)</p>
+                    </div>
+                </div>
+            `,
+            'eventos': `
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+                    <h1 class="text-5xl font-extrabold text-c-nav mb-8 text-center border-b-4 border-c-contrast pb-3">Agenda de Eventos</h1>
+                    <p class="text-xl text-gray-600 text-center mb-12">Confira nossos próximos encontros, celebrações e formações especiais.</p>
+                    
+                    <div class="bg-white p-6 rounded-xl shadow-xl mb-8 border-l-4 border-c-detail">
+                        <h2 class="text-3xl font-bold text-c-secondary mb-4">Próximo Evento Destacado:</h2>
+                        <div class="flex flex-col md:flex-row items-center justify-between">
+                            <div>
+                                <h3 class="text-2xl font-bold text-c-nav mb-1">Cenáculo de Pentecostes - Fogo do Espírito</h3>
+                                <p class="text-gray-600 mb-2">Um dia inteiro de louvor, pregação e adoração ao Santíssimo Sacramento.</p>
+                                <p class="text-lg text-c-detail font-medium">${iconSVG('calendar', 'w-5 h-5 inline mr-2')} 24 de Maio, das 09:00 às 17:00</p>
+                            </div>
+                            <button onclick="alert('Simulação de Inscrição para o Cenáculo');" class="mt-4 md:mt-0 bg-c-contrast hover:bg-c-contrast/80 text-c-base font-bold py-2 px-6 rounded-full shadow transition duration-300">Inscreva-se</button>
+                        </div>
+                    </div>
+
+                    <!-- Lista de Eventos (Simulação) -->
+                    <div class="space-y-6">
+                        <!-- Evento 1 -->
+                        <div class="bg-gray-50 p-5 rounded-lg shadow border border-c-contrast/50 hover:shadow-lg transition duration-300">
+                            <div class="flex items-start">
+                                <div class="w-16 h-16 bg-c-secondary text-white flex flex-col items-center justify-center rounded-lg mr-4 flex-shrink-0">
+                                    <span class="text-xl font-bold">10</span>
+                                    <span class="text-xs">JUN</span>
+                                </div>
+                                <div>
+                                    <h4 class="text-xl font-bold text-c-nav">Noite de Adoração Jovem</h4>
+                                    <p class="text-sm text-gray-600">Terças-feiras, 20h00 - Capela da Comunidade</p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Evento 2 -->
+                        <div class="bg-gray-50 p-5 rounded-lg shadow border border-c-contrast/50 hover:shadow-lg transition duration-300">
+                            <div class="flex items-start">
+                                <div class="w-16 h-16 bg-c-secondary text-white flex flex-col items-center justify-center rounded-lg mr-4 flex-shrink-0">
+                                    <span class="text-xl font-bold">01</span>
+                                    <span class="text-xs">JUL</span>
+                                </div>
+                                <div>
+                                    <h4 class="text-xl font-bold text-c-nav">Formação para Noivos</h4>
+                                    <p class="text-sm text-gray-600">Sábados, 09h00 - Inscrição obrigatória. Duração: 4 encontros.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `,
+             // Outras páginas relevantes (Testemunhos, Ministérios, Galeria, Blog Espiritual)
+             'testemunhos': `
+                <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+                    <h1 class="text-5xl font-extrabold text-c-nav mb-8 text-center border-b-4 border-c-contrast pb-3">Histórias que Inspiram</h1>
+                    <p class="text-xl text-gray-600 text-center mb-12">Leia os relatos de fé e as graças alcançadas pelos membros da Comunidade Yeshuá.</p>
+
+                    <!-- Destaque de Testemunho -->
+                    <div class="bg-white p-8 rounded-2xl shadow-2xl border-l-8 border-c-secondary mb-10">
+                        <blockquote class="italic text-gray-700 text-xl leading-relaxed">
+                            "Eu estava completamente sem esperança, mas a palavra de Deus pregada no retiro da comunidade reacendeu o fogo da fé em mim. Hoje, sou uma nova criatura. Louvado seja Deus!"
+                        </blockquote>
+                        <p class="mt-4 text-right font-bold text-c-detail">- Ana Lúcia, Coordenadora de Pastoral</p>
+                    </div>
+
+                    <!-- Formulário de Envio -->
+                    <div class="bg-c-contrast/20 p-8 rounded-xl shadow-lg border-t-4 border-c-detail">
+                        <h2 class="text-3xl font-bold text-c-nav mb-4 text-center">Compartilhe Sua Graça!</h2>
+                        <p class="text-center text-gray-700 mb-6">Deus agiu na sua vida? Seu testemunho pode mudar a vida de alguém. Envie-o aqui.</p>
+                        <form onsubmit="alert('Testemunho enviado para aprovação. Obrigado por compartilhar!'); return false;" class="space-y-4">
+                            <input type="text" placeholder="Seu Nome (Opcional)" class="block w-full rounded-lg border border-gray-300 p-3">
+                            <textarea rows="5" placeholder="Escreva seu testemunho de fé..." required class="block w-full rounded-lg border border-gray-300 p-3"></textarea>
+                            <button type="submit" class="w-full bg-c-nav hover:bg-c-secondary text-white font-bold py-3 rounded-full transition duration-300">
+                                Enviar Meu Testemunho
+                            </button>
+                        </form>
+                    </div>
+                </div>
+             `,
+             'ministerios': `
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+                    <h1 class="text-5xl font-extrabold text-c-nav mb-8 text-center border-b-4 border-c-contrast pb-3">Nossos Ministérios</h1>
+                    <p class="text-xl text-gray-600 text-center mb-12">Exerça seus dons a serviço do Reino de Deus. Encontre seu lugar na Comunidade.</p>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        <!-- Ministério da Música -->
+                        <div class="bg-white p-6 rounded-xl shadow-lg border-t-4 border-c-secondary hover:shadow-2xl transition duration-300 transform hover:scale-[1.02]">
+                            <h3 class="text-2xl font-bold text-c-nav mb-3 flex items-center">${iconSVG('cross', 'w-6 h-6 mr-2 text-c-detail')} Música e Artes</h3>
+                            <p class="text-gray-600 mb-4">Anunciar a Palavra de Deus e levar à oração através do louvor e da arte, nas missas e eventos.</p>
+                        </div>
+                        <!-- Ministério da Intercessão -->
+                        <div class="bg-white p-6 rounded-xl shadow-lg border-t-4 border-c-secondary hover:shadow-2xl transition duration-300 transform hover:scale-[1.02]">
+                            <h3 class="text-2xl font-bold text-c-nav mb-3 flex items-center">${iconSVG('heart', 'w-6 h-6 mr-2 text-c-detail')} Intercessão</h3>
+                            <p class="text-gray-600 mb-4">Dedicar-se à oração fervorosa pela comunidade, por seus membros e pelos pedidos recebidos.</p>
+                        </div>
+                        <!-- Ministério da Acolhida -->
+                        <div class="bg-white p-6 rounded-xl shadow-lg border-t-4 border-c-secondary hover:shadow-2xl transition duration-300 transform hover:scale-[1.02]">
+                            <h3 class="text-2xl font-bold text-c-nav mb-3 flex items-center">${iconSVG('users', 'w-6 h-6 mr-2 text-c-detail')} Acolhida e Diaconia</h3>
+                            <p class="text-gray-600 mb-4">Receber os irmãos com alegria e servir nas necessidades práticas dos encontros e celebrações.</p>
+                        </div>
+                        <!-- Botão de Ação -->
+                        <div class="lg:col-span-3 text-center pt-8">
+                            <button onclick="alert('Simulação de Formulário de Inscrição para Ministérios');" class="bg-c-contrast hover:bg-c-contrast/80 text-c-base font-bold py-3 px-10 text-lg rounded-full shadow-lg transition duration-300 transform hover:scale-105">
+                                Quero Participar!
+                            </button>
+                        </div>
+                    </div>
+                </div>
+             `,
+             'galeria': `
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+                    <h1 class="text-5xl font-extrabold text-c-nav mb-8 text-center border-b-4 border-c-contrast pb-3">Galeria de Fotos e Vídeos</h1>
+                    <p class="text-xl text-gray-600 text-center mb-12">Reviva os melhores momentos dos nossos eventos e encontros.</p>
+
+                    <!-- Botões de Filtro -->
+                    <div class="flex flex-wrap justify-center gap-3 mb-12">
+                        <button class="bg-c-nav text-white px-5 py-2 rounded-full font-semibold">Todos</button>
+                        <button class="bg-c-secondary/20 text-c-nav px-5 py-2 rounded-full font-semibold hover:bg-c-detail hover:text-white transition duration-200">Retiros</button>
+                        <button class="bg-c-secondary/20 text-c-nav px-5 py-2 rounded-full font-semibold hover:bg-c-detail hover:text-white transition duration-200">Missas</button>
+                        <button class="bg-c-secondary/20 text-c-nav px-5 py-2 rounded-full font-semibold hover:bg-c-detail hover:text-white transition duration-200">Encontros Jovens</button>
+                    </div>
+
+                    <!-- Grid de Imagens/Vídeos -->
+                    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                        <div class="relative overflow-hidden rounded-xl shadow-lg group hover:shadow-2xl transition duration-300">
+                            <img src="${placeholderImage('Momento de Oração')}" alt="Momento de Oração" class="w-full h-48 object-cover transform group-hover:scale-105 transition duration-500">
+                            <div class="absolute inset-0 bg-c-base/40 opacity-0 group-hover:opacity-100 flex items-center justify-center transition duration-300">
+                                <span class="text-white font-bold text-center p-2">${iconSVG('camera', 'w-8 h-8')} Retiro 2024</span>
+                            </div>
+                        </div>
+                        <div class="relative overflow-hidden rounded-xl shadow-lg group hover:shadow-2xl transition duration-300">
+                            <img src="${placeholderImage('Pregação da Palavra')}" alt="Pregação da Palavra" class="w-full h-48 object-cover transform group-hover:scale-105 transition duration-500">
+                            <div class="absolute inset-0 bg-c-base/40 opacity-0 group-hover:opacity-100 flex items-center justify-center transition duration-300">
+                                <span class="text-white font-bold text-center p-2">${iconSVG('camera', 'w-8 h-8')} Missa Dominical</span>
+                            </div>
+                        </div>
+                        <div class="relative overflow-hidden rounded-xl shadow-lg group hover:shadow-2xl transition duration-300">
+                            <img src="${placeholderImage('Grupo de Louvor')}" alt="Grupo de Louvor" class="w-full h-48 object-cover transform group-hover:scale-105 transition duration-500">
+                            <div class="absolute inset-0 bg-c-base/40 opacity-0 group-hover:opacity-100 flex items-center justify-center transition duration-300">
+                                <span class="text-white font-bold text-center p-2">${iconSVG('camera', 'w-8 h-8')} Vigília Jovem</span>
+                            </div>
+                        </div>
+                        <div class="relative overflow-hidden rounded-xl shadow-lg group hover:shadow-2xl transition duration-300">
+                            <img src="${placeholderImage('Acolhida')}" alt="Acolhida" class="w-full h-48 object-cover transform group-hover:scale-105 transition duration-500">
+                            <div class="absolute inset-0 bg-c-base/40 opacity-0 group-hover:opacity-100 flex items-center justify-center transition duration-300">
+                                <span class="text-white font-bold text-center p-2">${iconSVG('camera', 'w-8 h-8')} Acolhimento</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+             `,
+             'blog-espiritual': `
+                <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+                    <h1 class="text-5xl font-extrabold text-c-nav mb-8 text-center border-b-4 border-c-contrast pb-3">Blog Espiritual</h1>
+                    <p class="text-xl text-gray-600 text-center mb-12">Reflexões, meditações e artigos para alimentar sua alma diariamente.</p>
+
+                    <div class="space-y-8">
+                        <!-- Post 1 -->
+                        <article class="bg-white p-6 rounded-xl shadow-lg border-l-4 border-c-detail hover:shadow-xl transition duration-300">
+                            <p class="text-sm text-c-secondary mb-2">20 DE NOVEMBRO, 2025 | ESPIRITUALIDADE</p>
+                            <h2 class="text-3xl font-bold text-c-nav mb-3">A Importância do Silêncio na Oração</h2>
+                            <p class="text-gray-700 leading-relaxed mb-4">Em um mundo barulhento, encontrar o deserto interior é essencial para ouvir a voz suave de Deus...</p>
+                            <button class="text-c-detail font-semibold hover:text-c-nav transition duration-200">Continuar Lendo</button>
+                        </article>
+
+                        <!-- Post 2 -->
+                        <article class="bg-white p-6 rounded-xl shadow-lg border-l-4 border-c-detail hover:shadow-xl transition duration-300">
+                            <p class="text-sm text-c-secondary mb-2">10 DE NOVEMBRO, 2025 | FAMÍLIA</p>
+                            <h2 class="text-3xl font-bold text-c-nav mb-3">Como Lidar com as Crises de Fé dos Filhos</h2>
+                            <p class="text-gray-700 leading-relaxed mb-4">Um guia prático para pais que desejam acompanhar a jornada de fé de seus filhos com amor e paciência...</p>
+                            <button class="text-c-detail font-semibold hover:text-c-nav transition duration-200">Continuar Lendo</button>
+                        </article>
+                    </div>
+                </div>
+             `
+        };
+
+
+        // =========================================================
+        // 2. Funções de Controle da Aplicação (JS)
+        // =========================================================
+
+        /**
+         * Alterna o estado do menu mobile.
+         */
+        function toggleMobileMenu() {
+            mobileMenu.classList.toggle('hidden');
+        }
+
+        // Listener para o botão do menu mobile
+        mobileMenuButton.addEventListener('click', toggleMobileMenu);
+
+        /**
+         * Renderiza o conteúdo da página com base no ID.
+         * @param {string} pageId - O ID da página a ser carregada.
+         */
+        function renderPage(pageId) {
+            // Verifica se a página existe, senão carrega a Home
+            const content = pageContent[pageId] || pageContent['home'];
+
+            // Efeito de Transição: Fade Out
+            appContent.style.opacity = 0;
+            appContent.style.transition = 'opacity 0.3s ease-out';
+
+            // Garante que o scroll vá para o topo
+            window.scrollTo(0, 0);
+
+            // Troca o conteúdo após um breve delay para o fade out
+            setTimeout(() => {
+                appContent.innerHTML = content;
+
+                // Efeito de Transição: Fade In
+                appContent.style.opacity = 1;
+
+                // Atualiza o hash da URL para navegação/compartilhamento
+                if (window.location.hash !== `#${pageId}`) {
+                    history.pushState(null, null, `#${pageId}`);
+                }
+            }, 300); // 300ms de transição
+        }
+
+        /**
+         * Inicializa a aplicação ao carregar a página.
+         * Carrega a página com base no hash da URL ou a Home por padrão.
+         */
+        function initializeApp() {
+            const hash = window.location.hash.substring(1); // Remove o '#'
+            const initialPage = hash || 'home';
+            renderPage(initialPage);
+        }
+
+        // Listener para navegação com o botão "Voltar" do navegador
+        window.addEventListener('hashchange', () => {
+            const hash = window.location.hash.substring(1);
+            if (hash) {
+                renderPage(hash);
+            } else {
+                renderPage('home');
+            }
+        });
+
+        // Inicia a aplicação após o carregamento do DOM
+        document.addEventListener('DOMContentLoaded', initializeApp);
+    </script>
+</body>
+</html>
